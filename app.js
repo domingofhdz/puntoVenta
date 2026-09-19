@@ -57,7 +57,7 @@ app.run(["$rootScope", "$location", function($rootScope, $location) {
 }])
 
 app.controller("loginCtrl", function ($scope) {
-    const api = "http://localhost/test/pwas/app2/api"
+    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
 
     $("#frmLogin")
     .off()
@@ -90,7 +90,7 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         })
     }
 
-    const api = "http://localhost/test/pwas/app2/api"
+    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
 
     $scope.productos = []
 
