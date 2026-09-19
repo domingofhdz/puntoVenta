@@ -1,0 +1,58 @@
+<form id="frmProducto" method="post">
+    <div class="mb-1">
+        <label for="txtId">Id:</label>
+        <input type="text" class="form-control" id="txtId" name="txtId" readonly>
+    </div>
+    <div class="mb-1">
+        <label for="txtNombreProducto">Nombre:</label>
+        <input type="text" class="form-control" id="txtNombreProducto" name="txtNombreProducto" required>
+    </div>
+    <div class="mb-1">
+        <label for="txtPrecio">Precio:</label>
+        <input type="number" class="form-control" id="txtPrecio" name="txtPrecio" required>
+    </div>
+    <div class="mb-1">
+        <label for="cboCategoria">Categoría:</label>
+        <select class="form-select" name="cboCategoria" id="cboCategoria" required>
+            <option value="">Selecciona una opción</option>
+            <option>Galletas</option>
+            <option>Fritos</option>
+            <option>Refrescos</option>
+        </select>
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary" id="btnGuardar" name="btnGuardar">Guardar</button>
+        <button type="reset" class="btn btn-secondary" id="btnCancelar" name="btnCancelar">Cancelar</button>
+    </div>
+</form>
+
+<div class="mt-1 mb-1">
+    <label for="txtBusqueda">Búsqueda:</label>
+    <input type="text" class="form-control" id="txtBusqueda" placeholder="Buscar...">
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="producto in productos">
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.nombreProducto }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>{{ producto.categoria }}</td>
+                <td>
+                    <button class="btn btn-info btn-editar me-1 mb-1" data-id="{{ producto.id }}">Editar</button>
+                    <button class="btn btn-danger btn-eliminar" data-id="{{ producto.id }}">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
