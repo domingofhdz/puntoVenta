@@ -99,7 +99,7 @@ elseif (isset($_GET["iniciarSesion"])) {
 
 
 
-if (isset($_GET["buscarProductos"])) {
+elseif (isset($_GET["buscarProductos"]) && $login) {
     $busqueda = $_GET["txtBusqueda"];
     $busqueda = addslashes($busqueda);
 
@@ -116,7 +116,7 @@ if (isset($_GET["buscarProductos"])) {
     echo json_encode($array);
     exit;
 }
-elseif (isset($_GET["guardarProducto"])) {
+elseif (isset($_GET["guardarProducto"]) && $login) {
     $id = $_POST["txtId"];
     $nombreProducto = $_POST["txtNombreProducto"];
     $precio = $_POST["txtPrecio"];
@@ -139,7 +139,7 @@ elseif (isset($_GET["guardarProducto"])) {
 
     $guardar->execute();
 }
-elseif (isset($_GET["editarProducto"])) {
+elseif (isset($_GET["editarProducto"]) && $login) {
     $id = $_GET["txtId"];
     $id = addslashes($id);
 
@@ -156,7 +156,7 @@ elseif (isset($_GET["editarProducto"])) {
     echo json_encode($array);
     exit;
 }
-elseif (isset($_GET["eliminarProducto"])) {
+elseif (isset($_GET["eliminarProducto"]) && $login) {
     $id = $_POST["txtId"];
 
     $delete = $con->delete("productos");

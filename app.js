@@ -25,7 +25,9 @@ app.config(function ($routeProvider, $locationProvider) {
         redirectTo: "/"
     })
 })
-app.run(["$rootScope", "$location", function($rootScope, $location) {
+app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, $timeout) {
+    $rootScope.login = localStorage.getItem("jwt")
+
     $rootScope.$on("$routeChangeSuccess", function (event, current, previous) {
         const path      = current.$$route.originalPath
         $rootScope.path = path
@@ -49,6 +51,46 @@ app.run(["$rootScope", "$location", function($rootScope, $location) {
                 Authorization: `Bearer ${localStorage.getItem("jwt")}`
             }
         })
+
+        const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+
+        $.get(`${api}/?sesion`, function (sesion) {
+            if (sesion.length) {
+                // Si inició sesión
+                window.location = "#/productos"
+                $rootScope.login = true
+
+                return
+            }
+
+            // Si no inició sesión
+            // Podrías añadir un redireccionamiento si lo crees prudente
+            localStorage.removeItem("jwt")
+        })
+
+        $(".btn-cerrar-sesion")
+        .off()
+        .click(function () {
+            localStorage.removeItem("jwt")
+            $timeout(function () {
+                window.location = "#/"
+                $rootScope.login = false
+            })
+        })
+
+        function pageshow(event) {
+            if (event.persisted) {
+                if (!localStorage.getItem("jwt")) {
+                    window.location = "#/"
+                }
+                else {
+                    location.reload()
+                }
+            }
+        }
+
+        window.removeEventListener("pageshow", pageshow)
+        window.addEventListener("pageshow", pageshow)
     })
     $rootScope.$on("$routeChangeError", function () {
     })

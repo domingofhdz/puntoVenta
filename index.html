@@ -31,8 +31,9 @@
 </head>
 <body>
     <div class="container">
-        <a href="#/">Inicio de Sesión</a>
-        <a href="#/productos">Productos</a>
+        <a href="#/" class="ng-hide" ng-show="!login">Inicio de Sesión</a>
+        <a href="#/productos" class="ng-hide" ng-show="login">Productos</a>
+        <button class="btn btn-link btn-cerrar-sesion" class="ng-hide" ng-show="login">Cerrar Sesión</button>
         <div ng-view></div>
     </div>
 </body>
