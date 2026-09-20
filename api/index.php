@@ -23,6 +23,12 @@ $con->query("CREATE TABLE IF NOT EXISTS productos (
     precio REAL NOT NULL,
     categoria TEXT NOT NULL
 )");
+$con->query("CREATE TABLE IF NOT EXISTS ventas (
+    id TEXT PRIMARY KEY,
+    usuario INTEGER NOT NULL,
+    fechaHora TEXT NOT NULL,
+    pago REAL NULL
+)");
 
 
 
@@ -54,6 +60,7 @@ try {
 catch (Exception $error) {
     $usuario = array();
     $login   = false;
+    $id      = 0;
 }
  
 # endpoint para revisar estado de la sesión
@@ -99,6 +106,7 @@ elseif (isset($_GET["iniciarSesion"])) {
 
 
 
+// Endpoints de Productos
 elseif (isset($_GET["buscarProductos"]) && $login) {
     $busqueda = $_GET["txtBusqueda"];
     $busqueda = addslashes($busqueda);
@@ -160,6 +168,66 @@ elseif (isset($_GET["eliminarProducto"]) && $login) {
     $id = $_POST["txtId"];
 
     $delete = $con->delete("productos");
+    $delete->where("id", "=", $id);
+    $delete->execute();
+}
+
+
+
+elseif (isset($_GET["buscarVentas"]) && $login) {
+    $busqueda = $_GET["txtBusqueda"];
+    $busqueda = addslashes($busqueda);
+
+    $array = array();
+
+    $sql = "SELECT ventas.*, usuarios.nombreUsuario FROM ventas
+    INNER JOIN usuarios ON usuarios.id = ventas.usuario
+    WHERE fechaHora LIKE '%$busqueda%';";
+
+    foreach ($con->query($sql) as $venta) {
+        $array[] = $venta;
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+    exit;
+}
+elseif (isset($_GET["guardarVenta"]) && $login) {
+    $idUsuario = $id;
+
+    $id        = $_POST["txtId"];
+    $fechaHora = date("Y-m-d H:i:s");
+
+    if (!$id) {
+        $guardar = $con->insert("ventas", "id, usuario, fechaHora");
+        $guardar->value(uniqid());
+        $guardar->value($idUsuario);
+        $guardar->value($fechaHora);
+    }
+
+    $guardar->execute();
+}
+elseif (isset($_GET["editarVenta"]) && $login) {
+    $id = $_GET["txtId"];
+    $id = addslashes($id);
+
+    $array = array();
+
+    $sql = "SELECT * FROM ventas
+    WHERE id = '$id';";
+
+    foreach ($con->query($sql) as $venta) {
+        $array[] = $venta;
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+    exit;
+}
+elseif (isset($_GET["eliminarVenta"]) && $login) {
+    $id = $_POST["txtId"];
+
+    $delete = $con->delete("ventas");
     $delete->where("id", "=", $id);
     $delete->execute();
 }

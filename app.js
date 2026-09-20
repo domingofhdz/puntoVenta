@@ -21,6 +21,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "views/productos.html",
         controller: "productosCtrl"
     })
+    .when("/ventas", {
+        templateUrl: "views/ventas.html",
+        controller: "ventasCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -57,7 +61,6 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
         $.get(`${api}/?sesion`, function (sesion) {
             if (sesion.length) {
                 // Si inició sesión
-                window.location = "#/productos"
                 $rootScope.login = true
 
                 return
@@ -70,7 +73,7 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
 
         $(".btn-cerrar-sesion")
         .off()
-        .click(function () {
+        .click(function (event) {
             localStorage.removeItem("jwt")
             $timeout(function () {
                 window.location = "#/"
@@ -212,6 +215,76 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         }
 
         $.post(`${api}/?eliminarProducto`, {
+            txtId: id
+        }, function (respuesta) {
+            buscar()
+        })
+    })
+})
+
+app.controller("ventasCtrl", function ($scope, $timeout) {
+    function buscar(busqueda) {
+        $.get(`${api}/?buscarVentas`, {
+            txtBusqueda: busqueda || ""
+        }, function (ventas) {
+            $timeout(function () {
+                $scope.ventas = ventas
+            })
+        })
+    }
+
+    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+
+    $scope.productos = []
+
+    buscar()
+
+    $("#frmVenta")
+    .off()
+    .submit(function (event) {
+        event.preventDefault()
+
+        $.post(`${api}/?guardarVenta`, $(this).serialize(), function (respuesta) {
+            $("#frmVenta").get(0).reset()
+            buscar()
+        })
+    })
+    .on("reset", function (event) {
+        // $(':hidden').val("")
+    })
+
+    const buscarConDebounce = debounce(function () {
+        buscar($("#txtBusqueda").val())
+    }, 500)
+
+    $("#txtBusqueda")
+    .off()
+    .on("input", buscarConDebounce)
+
+    $(document)
+    .off("click", ".btn-editar")
+    .on("click", ".btn-editar", function (event) {
+        const id = $(this).data("id")
+
+        $.get(`${api}/?editarVenta`, {
+            txtId: id
+        }, function (ventas) {
+            const venta = ventas[0]
+
+            $("#txtId").val(venta.id)
+        })
+    })
+
+    $(document)
+    .off("click", ".btn-eliminar")
+    .on("click", ".btn-eliminar", function (event) {
+        const id = $(this).data("id")
+
+        if (!confirm("Quieres eliminar este registro?")) {
+            return
+        }
+
+        $.post(`${api}/?eliminarVenta`, {
             txtId: id
         }, function (respuesta) {
             buscar()

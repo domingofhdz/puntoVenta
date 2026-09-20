@@ -1,0 +1,41 @@
+<form id="frmVenta" method="post">
+    <div class="mb-1">
+        <label for="txtId">Id:</label>
+        <input type="text" class="form-control" id="txtId" name="txtId" readonly>
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary" id="btnGuardar" name="btnGuardar">Guardar</button>
+        <button type="reset" class="btn btn-secondary" id="btnCancelar" name="btnCancelar">Cancelar</button>
+    </div>
+</form>
+
+<div class="mt-1 mb-1">
+    <label for="txtBusqueda">Búsqueda:</label>
+    <input type="text" class="form-control" id="txtBusqueda" placeholder="Buscar...">
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Fecha Hora</th>
+                <th>Pago</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="venta in ventas">
+                <td>{{ venta.id }}</td>
+                <td>{{ venta.nombreUsuario }}</td>
+                <td>{{ venta.fechaHora }}</td>
+                <td>{{ venta.pago }}</td>
+                <td>
+                    <button class="btn btn-info btn-editar me-1 mb-1" data-id="{{ venta.id }}">Editar</button>
+                    <button class="btn btn-danger btn-eliminar" data-id="{{ venta.id }}">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
