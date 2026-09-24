@@ -61,6 +61,9 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
         $.get(`${api}/?sesion`, function (sesion) {
             if (sesion.length) {
                 // Si inició sesión
+                if (location.hash == "#/") {
+                    window.location = "#/productos"
+                }
                 $rootScope.login = true
 
                 return
@@ -68,14 +71,18 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
 
             // Si no inició sesión
             // Podrías añadir un redireccionamiento si lo crees prudente
+            if (location.hash != "#/") {
+                window.location = "#/"
+            }
+            $rootScope.login = false
             localStorage.removeItem("jwt")
         })
 
         $(".btn-cerrar-sesion")
         .off()
         .click(function (event) {
-            localStorage.removeItem("jwt")
             $timeout(function () {
+                localStorage.removeItem("jwt")
                 window.location = "#/"
                 $rootScope.login = false
             })
@@ -180,8 +187,8 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         }
     })
 
-    const buscarConDebounce = debounce(function () {
-        buscar($("#txtBusqueda").val())
+    const buscarConDebounce = debounce(function (event) {
+        buscar(event.target.value)
     }, 500)
 
     $("#txtBusqueda")
@@ -235,7 +242,7 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
 
     const api = "http://localhost/test/pwas/app2/puntoVenta/api"
 
-    $scope.productos = []
+    $scope.ventas = []
 
     buscar()
 
@@ -253,8 +260,8 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
         // $(':hidden').val("")
     })
 
-    const buscarConDebounce = debounce(function () {
-        buscar($("#txtBusqueda").val())
+    const buscarConDebounce = debounce(function (event) {
+        buscar(event.target.value)
     }, 500)
 
     $("#txtBusqueda")
