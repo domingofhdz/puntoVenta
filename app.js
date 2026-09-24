@@ -25,6 +25,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "views/ventas.html",
         controller: "ventasCtrl"
     })
+    .when("/ventas/:id", {
+        templateUrl: "views/venta.html",
+        controller: "ventaCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -297,4 +301,8 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
             buscar()
         })
     })
+})
+
+app.controller("ventaCtrl", function ($scope, $routeParams) {
+    console.log($routeParams.id)
 })

@@ -32,7 +32,7 @@
                 <td>{{ venta.fechaHora }}</td>
                 <td>{{ venta.pago }}</td>
                 <td>
-                    <button class="btn btn-info btn-editar me-1 mb-1" data-id="{{ venta.id }}">Editar</button>
+                    <a class="btn btn-info me-1 mb-1" data-id="{{ venta.id }}" href="#/ventas/{{ venta.id }}">Editar</a>
                     <button class="btn btn-danger btn-eliminar" data-id="{{ venta.id }}">Eliminar</button>
                 </td>
             </tr>

@@ -22,13 +22,21 @@ $con->query("CREATE TABLE IF NOT EXISTS productos (
     nombreProducto TEXT NOT NULL,
     precio REAL NOT NULL,
     categoria TEXT NOT NULL
-)");
+);");
 $con->query("CREATE TABLE IF NOT EXISTS ventas (
     id TEXT PRIMARY KEY,
     usuario INTEGER NOT NULL,
     fechaHora TEXT NOT NULL,
     pago REAL NULL
-)");
+);");
+$con->query("CREATE TABLE IF NOT EXISTS detalles_ventas (
+    id TEXT PRIMARY KEY,
+    venta TEXT NOT NULL,
+    producto TEXT NOT NULL,
+    precio REAL NOT NULL,
+    cantidad INTEGER NOT NULL
+);");
+
 
 
 
