@@ -298,13 +298,9 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
         $timeout()
         $scope.detalles = detalles
 
-        let total = 0
-
-        detalles.forEach(function (detalle) {
-            total += detalle.precio * detalle.cantidad
-        })
-
-        $scope.total = total
+        $scope.total = detalles.reduce(function (total, detalle) {
+            return total + (detalle.precio * detalle.cantidad)
+        }, 0)
     })
 
     $scope.total = 0
