@@ -273,20 +273,6 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
     .on("input", buscarConDebounce)
 
     $(document)
-    .off("click", ".btn-editar")
-    .on("click", ".btn-editar", function (event) {
-        const id = $(this).data("id")
-
-        $.get(`${api}/?editarVenta`, {
-            txtId: id
-        }, function (ventas) {
-            const venta = ventas[0]
-
-            $("#txtId").val(venta.id)
-        })
-    })
-
-    $(document)
     .off("click", ".btn-eliminar")
     .on("click", ".btn-eliminar", function (event) {
         const id = $(this).data("id")
@@ -303,6 +289,23 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
     })
 })
 
-app.controller("ventaCtrl", function ($scope, $routeParams) {
-    console.log($routeParams.id)
+app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
+    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+
+    $.get(`${api}/?venta`, {
+        id: $routeParams.id
+    }, function (detalles) {
+        $timeout()
+        $scope.detalles = detalles
+
+        let total = 0
+
+        detalles.forEach(function (detalle) {
+            total += detalle.precio * detalle.cantidad
+        })
+
+        $scope.total = total
+    })
+
+    $scope.total = 0
 })

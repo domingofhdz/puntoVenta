@@ -1,0 +1,28 @@
+<div class="shadow shadow-lg p-2 rounded">
+    <h5>Venta #{{ detalles[0].id }}</h5>
+    <p>Usuario: <b>{{ detalles[0].nombreUsuario }}</b>. Fecha Hora: <b>{{ detalles[0].fechaHora }}</b>.</p>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="detalle in detalles">
+                    <td>{{ detalle.nombreProducto }}</td>
+                    <td>$ {{ detalle.precio }}</td>
+                    <td>&times; {{ detalle.cantidad }}</td>
+                    <td>$ {{ detalle.precio * detalle.cantidad }}</td>
+                </tr>
+                <tr>
+                    <th colspan="3">Total</th>
+                    <th>$ {{ total }}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

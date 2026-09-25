@@ -17,7 +17,10 @@ $con = new Conexion(array(
     "bd"   => "../data/bd.db"
 ));
 
-$con->query("CREATE TABLE IF NOT EXISTS productos (
+
+
+$con->query("CREATE TABLE IF NOT EXISTS 
+productos (
     id TEXT PRIMARY KEY,
     nombreProducto TEXT NOT NULL,
     precio REAL NOT NULL,
@@ -36,7 +39,6 @@ $con->query("CREATE TABLE IF NOT EXISTS detalles_ventas (
     precio REAL NOT NULL,
     cantidad INTEGER NOT NULL
 );");
-
 
 
 
@@ -215,17 +217,20 @@ elseif (isset($_GET["guardarVenta"]) && $login) {
 
     $guardar->execute();
 }
-elseif (isset($_GET["editarVenta"]) && $login) {
-    $id = $_GET["txtId"];
+elseif (isset($_GET["venta"]) && $login) {
+    $id = $_GET["id"];
     $id = addslashes($id);
 
     $array = array();
 
-    $sql = "SELECT * FROM ventas
-    WHERE id = '$id';";
+    $sql = "SELECT ventas.id, ventas.fechaHora, usuarios.nombreUsuario, productos.nombreProducto, detalles_ventas.precio, detalles_ventas.cantidad FROM detalles_ventas
+    INNER JOIN ventas ON ventas.id = detalles_ventas.venta
+    INNER JOIN usuarios ON usuarios.id = ventas.usuario
+    INNER JOIN productos ON productos.id = detalles_ventas.producto
+    WHERE ventas.id = '$id';";
 
-    foreach ($con->query($sql) as $venta) {
-        $array[] = $venta;
+    foreach ($con->query($sql) as $detalle) {
+        $array[] = $detalle;
     }
 
     header("Content-Type: application/json");
