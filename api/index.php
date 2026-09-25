@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
 }
 
 require "conexion.php";
+require "../constants.php";
 
 $con = new Conexion(array(
     "tipo" => "sqlite",
@@ -43,8 +44,6 @@ $con->query("CREATE TABLE IF NOT EXISTS detalles_ventas (
 
 
 require "../firebase-php-jwt/vendor/autoload.php";
-
-$jwtClave = "Test12345-----------------------------------------------";
 
 $headers = getallheaders();
 
