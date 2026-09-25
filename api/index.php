@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
 }
 
 require "conexion.php";
-require "../constants.php";
+require "../../constants.php";
 
 $con = new Conexion(array(
     "tipo" => "sqlite",
