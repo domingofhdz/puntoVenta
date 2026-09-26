@@ -222,7 +222,7 @@ elseif (isset($_GET["venta"]) && $login) {
 
     $array = array();
 
-    $sql = "SELECT ventas.id, ventas.fechaHora, usuarios.nombreUsuario, productos.nombreProducto, detalles_ventas.precio, detalles_ventas.cantidad FROM detalles_ventas
+    $sql = "SELECT detalles_ventas.id AS idDetalle, ventas.id, ventas.fechaHora, usuarios.nombreUsuario, productos.nombreProducto, detalles_ventas.precio, detalles_ventas.cantidad FROM detalles_ventas
     INNER JOIN ventas ON ventas.id = detalles_ventas.venta
     INNER JOIN usuarios ON usuarios.id = ventas.usuario
     INNER JOIN productos ON productos.id = detalles_ventas.producto
@@ -236,7 +236,7 @@ elseif (isset($_GET["venta"]) && $login) {
     echo json_encode($array);
     exit;
 }
-elseif (isset($_GET["autocompleteProductos"])) {
+elseif (isset($_GET["autocompleteProductos"]) && $login) {
     $text = $_GET["text"];
     $text = addslashes($text);
 
@@ -254,6 +254,21 @@ elseif (isset($_GET["autocompleteProductos"])) {
     header("Content-Type: application/json");
     echo json_encode($array);
     exit;
+}
+elseif (isset($_GET["agregarDetalleVenta"]) && $login) {
+    $id       = uniqid();
+    $venta    = $_GET["idVenta"];
+    $producto = $_POST["txtIdProducto"];
+    $precio   = $_POST["txtPrecio"];
+    $cantidad = $_POST["txtCantidad"];
+
+    $insert = $con->insert("detalles_ventas", "id, venta, producto, precio, cantidad");
+    $insert->value($id);
+    $insert->value($venta);
+    $insert->value($producto);
+    $insert->value($precio);
+    $insert->value($cantidad);
+    $insert->execute();
 }
 elseif (isset($_GET["eliminarVenta"]) && $login) {
     $id = $_POST["txtId"];

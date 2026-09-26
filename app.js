@@ -341,18 +341,33 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
         }
     })
 
+    function cargarDetallesVenta() {
+        $.get(`${api}/?venta`, {
+            id: $routeParams.id
+        }, function (detalles) {
+            $timeout()
+            $scope.detalles = detalles
+
+            $scope.total = detalles.reduce(function (total, detalle) {
+                return total + (detalle.precio * detalle.cantidad)
+            }, 0)
+        })
+
+        $scope.total = 0
+    }
+
     const api = "http://localhost/test/pwas/app2/puntoVenta/api"
 
-    $.get(`${api}/?venta`, {
-        id: $routeParams.id
-    }, function (detalles) {
-        $timeout()
-        $scope.detalles = detalles
+    cargarDetallesVenta()
 
-        $scope.total = detalles.reduce(function (total, detalle) {
-            return total + (detalle.precio * detalle.cantidad)
-        }, 0)
+    $("#frmDetalleVenta")
+    .off()
+    .submit(function (event) {
+        event.preventDefault()
+
+        $.post(`${api}/?agregarDetalleVenta&idVenta=${$routeParams.id}`, $(this).serialize(), function (respuesta) {
+            cargarDetallesVenta()
+            $("#frmDetalleVenta").get(0).reset()
+        })
     })
-
-    $scope.total = 0
 })

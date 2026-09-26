@@ -39,6 +39,7 @@
                             <th>Precio</th>
                             <th>Cantidad</th>
                             <th>Subtotal</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,10 +48,14 @@
                             <td>$ {{ detalle.precio }}</td>
                             <td>&times; {{ detalle.cantidad }}</td>
                             <td>$ {{ detalle.precio * detalle.cantidad }}</td>
+                            <td>
+                                <button class="btn btn-danger" data-id="{{ detalle.idDetalle }}">Eliminar</button>
+                            </td>
                         </tr>
                         <tr>
                             <th colspan="3">Total</th>
                             <th>$ {{ total }}</th>
+                            <th></th>
                         </tr>
                     </tbody>
                 </table>
