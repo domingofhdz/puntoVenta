@@ -365,9 +365,25 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
     .submit(function (event) {
         event.preventDefault()
 
-        $.post(`${api}/?agregarDetalleVenta&idVenta=${$routeParams.id}`, $(this).serialize(), function (respuesta) {
+        $.post(`${api}/?agregarDetalleVenta&txtIdVenta=${$routeParams.id}`, $(this).serialize(), function (respuesta) {
             cargarDetallesVenta()
             $("#frmDetalleVenta").get(0).reset()
+        })
+    })
+
+    $(document)
+    .off("click", ".btn-eliminar")
+    .on("click", ".btn-eliminar", function (event) {
+        const id = $(this).data("id")
+
+        if (!confirm("Quieres eliminar este registro?")) {
+            return
+        }
+
+        $.post(`${api}/?eliminarDetalleVenta`, {
+            txtId: id
+        }, function (respuesta) {
+            cargarDetallesVenta()
         })
     })
 })

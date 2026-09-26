@@ -257,7 +257,7 @@ elseif (isset($_GET["autocompleteProductos"]) && $login) {
 }
 elseif (isset($_GET["agregarDetalleVenta"]) && $login) {
     $id       = uniqid();
-    $venta    = $_GET["idVenta"];
+    $venta    = $_GET["txtIdVenta"];
     $producto = $_POST["txtIdProducto"];
     $precio   = $_POST["txtPrecio"];
     $cantidad = $_POST["txtCantidad"];
@@ -269,6 +269,13 @@ elseif (isset($_GET["agregarDetalleVenta"]) && $login) {
     $insert->value($precio);
     $insert->value($cantidad);
     $insert->execute();
+}
+elseif (isset($_GET["eliminarDetalleVenta"]) && $login) {
+    $id = $_POST["txtId"];
+
+    $delete = $con->delete("detalles_ventas");
+    $delete->where("id", "=", $id);
+    $delete->execute();
 }
 elseif (isset($_GET["eliminarVenta"]) && $login) {
     $id = $_POST["txtId"];
