@@ -290,6 +290,57 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
 })
 
 app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
+    function searchAutocompleteProductos() {
+        $("#txtNombreProducto").autocomplete("search", $("#txtNombreProducto").val())
+    }
+    function autocompleteProductos() {
+        if ($("#txtNombreProducto").val().length < 4) {
+            return
+        }
+    
+        $.get(`${api}/?autocompleteProductos`, {
+            text: $("#txtNombreProducto").val()
+        }, function (productos) {
+            $("#txtNombreProducto").autocomplete("option", "source", productos)
+            searchAutocompleteProductos()
+        })
+    }
+    
+    const autocompleteProductosConDebounce = debounce(autocompleteProductos, 500)
+
+    $("#txtNombreProducto")
+    .off()
+    .on("input", autocompleteProductosConDebounce)
+    .focus(searchAutocompleteProductos)
+    $("#txtNombreProducto").autocomplete({
+        source: [],
+        minLength: 0,
+        _renderItem: function (ul, item) {
+            return $("<li>")
+            .attr("data-value", item.value)
+            .attr("data-label", item.label)
+            .attr("data-precio", item.precio)
+            .append(item.label)
+            .appendTo(ul);
+        },
+        select: function (event, ui) {
+            const item = ui.item
+            $("#txtNombreProducto").val(item.label)
+            $("#txtIdProducto").val(item.value)
+            $("#txtPrecio").val(item.precio)
+    
+            event.preventDefault()
+        },
+        focus: function (event, ui) {
+            const item = ui.item
+            $("#txtNombreProducto").val(item.label)
+            $("#txtIdProducto").val(item.value)
+            $("#txtPrecio").val(item.precio)
+    
+            event.preventDefault()
+        }
+    })
+
     const api = "http://localhost/test/pwas/app2/puntoVenta/api"
 
     $.get(`${api}/?venta`, {

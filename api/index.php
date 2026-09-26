@@ -236,6 +236,25 @@ elseif (isset($_GET["venta"]) && $login) {
     echo json_encode($array);
     exit;
 }
+elseif (isset($_GET["autocompleteProductos"])) {
+    $text = $_GET["text"];
+    $text = addslashes($text);
+
+    $array = array();
+
+    $sql = "SELECT id AS value, nombreProducto AS label, precio FROM productos
+    WHERE nombreProducto LIKE '%$text%'
+    ORDER BY nombreProducto
+    LIMIT 10;";
+
+    foreach ($con->query($sql) AS $producto) {
+        $array[] = $producto;
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+    exit;
+}
 elseif (isset($_GET["eliminarVenta"]) && $login) {
     $id = $_POST["txtId"];
 
