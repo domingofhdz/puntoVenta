@@ -60,7 +60,7 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
             }
         })
 
-        const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+        const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
         $.get(`${api}/?sesion`, function (sesion) {
             if (sesion.length) {
@@ -113,7 +113,7 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
 }])
 
 app.controller("loginCtrl", function ($scope) {
-    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     $("#frmLogin")
     .off()
@@ -146,7 +146,7 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         })
     }
 
-    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     $scope.productos = []
 
@@ -244,7 +244,7 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
         })
     }
 
-    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     $scope.ventas = []
 
@@ -356,7 +356,7 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
         $scope.total = 0
     }
 
-    const api = "http://localhost/test/pwas/app2/puntoVenta/api"
+    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     cargarDetallesVenta()
 
