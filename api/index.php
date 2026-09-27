@@ -116,7 +116,7 @@ elseif (isset($_GET["iniciarSesion"])) {
 
 
 // Endpoints de Productos
-elseif (isset($_GET["buscarProductos"]) && $login) {
+elseif (isset($_GET["buscarProductos"])) {
     $busqueda = $_GET["txtBusqueda"];
     $busqueda = addslashes($busqueda);
 
