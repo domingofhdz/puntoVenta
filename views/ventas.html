@@ -32,8 +32,11 @@
                 <td>{{ venta.fechaHora }}</td>
                 <td>{{ venta.pago }}</td>
                 <td>
-                    <a class="btn btn-info me-1 mb-1" data-id="{{ venta.id }}" href="#/ventas/{{ venta.id }}">Editar</a>
-                    <button class="btn btn-danger btn-eliminar" data-id="{{ venta.id }}">Eliminar</button>
+                    <a class="btn btn-info me-1 mb-1" data-id="{{ venta.id }}" href="#/ventas/{{ venta.id }}">
+                        <span ng-if="!venta.pago">Editar</span>
+                        <span ng-if="venta.pago">Ver</span>
+                    </a>
+                    <button class="btn btn-danger btn-eliminar" data-id="{{ venta.id }}" ng-if="!venta.pago">Eliminar</button>
                 </td>
             </tr>
         </tbody>

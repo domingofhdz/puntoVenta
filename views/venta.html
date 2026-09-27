@@ -5,7 +5,7 @@
                 <h5>Venta #{{ detalles[0].id }}</h5>
                 <p>Usuario: <b>{{ detalles[0].nombreUsuario }}</b>. Fecha Hora: <b>{{ detalles[0].fechaHora }}</b>.</p>
             </div>
-            <form method="post" id="frmDetalleVenta">
+            <form method="post" id="frmDetalleVenta" class="ng-hide" ng-show="!detalles[0].pago">
                 <div class="mb-1">
                     <label for="txtNombreProducto">Producto:</label>
                     <div class="row">
@@ -49,7 +49,7 @@
                             <td>&times; {{ detalle.cantidad }}</td>
                             <td>$ {{ detalle.precio * detalle.cantidad }}</td>
                             <td>
-                                <button class="btn btn-danger btn-eliminar" data-id="{{ detalle.idDetalle }}">Eliminar</button>
+                                <button class="btn btn-danger btn-eliminar ng-hide" data-id="{{ detalle.idDetalle }}" ng-show="!detalles[0].pago">Eliminar</button>
                             </td>
                         </tr>
                         <tr>
@@ -60,6 +60,25 @@
                     </tbody>
                 </table>
             </div>
+            <form id="frmVenta" method="post" class="ng-hide" ng-show="!detalles[0].pago">
+                <div class="mt-1 mb-1">
+                    <div class="row">
+                        <div class="col-6 col-sm-6 col-md-8 col-lg-8 col-xl-8">
+                            <label for="txtPago">Pago:</label>
+                            <input type="number" class="form-control" id="txtPago" name="txtPago" ng-model="pago" ng-init="pago=0;">
+                        </div>
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                            <label for="txtCambio">Cambio:</label>
+                            <input type="number" class="form-control" id="txtCambio" name="txtCambio" ng-model="cambio" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-1 text-end">
+                    <button class="btn btn-primary" id="btnFinalizarVenta" name="btnFinalizarVenta" ng-disabled="pago &lt; total || !total;">
+                        Finalizar venta
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

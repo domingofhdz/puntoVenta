@@ -203,18 +203,13 @@ elseif (isset($_GET["buscarVentas"]) && $login) {
 }
 elseif (isset($_GET["guardarVenta"]) && $login) {
     $idUsuario = $id;
-
-    $id        = $_POST["txtId"];
     $fechaHora = date("Y-m-d H:i:s");
 
-    if (!$id) {
-        $guardar = $con->insert("ventas", "id, usuario, fechaHora");
-        $guardar->value(uniqid());
-        $guardar->value($idUsuario);
-        $guardar->value($fechaHora);
-    }
-
-    $guardar->execute();
+    $insert = $con->insert("ventas", "id, usuario, fechaHora");
+    $insert->value(uniqid());
+    $insert->value($idUsuario);
+    $insert->value($fechaHora);
+    $insert->execute();
 }
 elseif (isset($_GET["venta"]) && $login) {
     $id = $_GET["id"];
@@ -222,7 +217,7 @@ elseif (isset($_GET["venta"]) && $login) {
 
     $array = array();
 
-    $sql = "SELECT detalles_ventas.id AS idDetalle, ventas.id, ventas.fechaHora, usuarios.nombreUsuario, productos.nombreProducto, detalles_ventas.precio, detalles_ventas.cantidad FROM detalles_ventas
+    $sql = "SELECT detalles_ventas.id AS idDetalle, ventas.id, ventas.pago, ventas.fechaHora, usuarios.nombreUsuario, productos.nombreProducto, detalles_ventas.precio, detalles_ventas.cantidad FROM detalles_ventas
     INNER JOIN ventas ON ventas.id = detalles_ventas.venta
     INNER JOIN usuarios ON usuarios.id = ventas.usuario
     INNER JOIN productos ON productos.id = detalles_ventas.producto
@@ -256,14 +251,13 @@ elseif (isset($_GET["autocompleteProductos"]) && $login) {
     exit;
 }
 elseif (isset($_GET["agregarDetalleVenta"]) && $login) {
-    $id       = uniqid();
     $venta    = $_GET["txtIdVenta"];
     $producto = $_POST["txtIdProducto"];
     $precio   = $_POST["txtPrecio"];
     $cantidad = $_POST["txtCantidad"];
 
     $insert = $con->insert("detalles_ventas", "id, venta, producto, precio, cantidad");
-    $insert->value($id);
+    $insert->value(uniqid());
     $insert->value($venta);
     $insert->value($producto);
     $insert->value($precio);
@@ -277,10 +271,20 @@ elseif (isset($_GET["eliminarDetalleVenta"]) && $login) {
     $delete->where("id", "=", $id);
     $delete->execute();
 }
+elseif (isset($_GET["finalizarVenta"]) && $login) {
+    $id   = $_GET["txtId"];
+    $pago = $_POST["txtPago"];
+
+    $update = $con->update("ventas");
+    $update->set("pago", $pago);
+    $update->where("id", "=", $id);
+    $update->execute();
+}
 elseif (isset($_GET["eliminarVenta"]) && $login) {
     $id = $_POST["txtId"];
 
     $delete = $con->delete("ventas");
     $delete->where("id", "=", $id);
+    $delete->where_and("pago", "IS", NULL);
     $delete->execute();
 }

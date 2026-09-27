@@ -386,4 +386,21 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
             cargarDetallesVenta()
         })
     })
+
+    $("#frmVenta")
+    .off()
+    .submit(function (event) {
+        event.preventDefault()
+
+        $.post(`${api}/?finalizarVenta&txtId=${$routeParams.id}`, $(this).serialize(), function (respuesta) {
+            window.location = "#/ventas"
+        })
+    })
+
+    $("#txtPago")
+    .off()
+    .bind("keyup input", function (event) {
+        $timeout()
+        $scope.cambio = parseFloat($scope.pago) - parseFloat($scope.total)
+    })
 })
