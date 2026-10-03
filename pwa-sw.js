@@ -1,6 +1,6 @@
 // Creamos una función para mandar a llamar la ruta completa del proyecto y poder pasar como parámetro el archivo para conformar la ruta, esto para evitar redundancia.
 function asset(file) {
-    return `http://localhost/test/pwas/app/puntoVenta/${(file ? file : "")}`
+    return `/test/pwas/app/puntoVenta/${(file ? file : "")}`
 }
  
 function syncNotifications(reg) {}
@@ -65,6 +65,7 @@ const PRECACHEFILES         = [
     asset("manifest.json"),
     asset(),
     asset("?source=pwa"),
+    asset("pwa-utils.js"),
     OFFLINEURL,
  
     // Aquí ya puedes añadir los archivos y CDNs del proyecto.
