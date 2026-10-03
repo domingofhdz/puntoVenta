@@ -8,6 +8,8 @@ function debounce(fun, delay) {
     }
 }
 
+const api = "http://localhost/test/pwas/app/puntoVenta/api"
+
 const app = angular.module("angularjsApp", ["ngRoute"])
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix("")
@@ -113,8 +115,6 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
 }])
 
 app.controller("loginCtrl", function ($scope) {
-    const api = "http://localhost/test/pwas/app/puntoVenta/api"
-
     $("#frmLogin")
     .off()
     .submit(function (event) {
@@ -145,8 +145,6 @@ app.controller("productosCtrl", function ($scope, $timeout) {
             })
         })
     }
-
-    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     $scope.productos = []
 
@@ -243,8 +241,6 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
             })
         })
     }
-
-    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     $scope.ventas = []
 
@@ -355,8 +351,6 @@ app.controller("ventaCtrl", function ($scope, $routeParams, $timeout) {
 
         $scope.total = 0
     }
-
-    const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
     cargarDetallesVenta()
 
