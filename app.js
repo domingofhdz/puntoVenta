@@ -135,18 +135,23 @@ app.controller("loginCtrl", function ($scope) {
     })
 })
 
+let productos = localStorage.getItem("ls-productos") || "[]"
+productos = JSON.parse(productos)
+
 app.controller("productosCtrl", function ($scope, $timeout) {
     function buscar(busqueda) {
         $.get(`${api}/?buscarProductos`, {
             txtBusqueda: busqueda || ""
-        }, function (productos) {
-            $timeout(function () {
-                $scope.productos = productos
-            })
+        }, function (respuesta) {
+            $timeout()
+            productos = respuesta
+            $scope.productos = respuesta
+
+            localStorage.setItem("ls-productos", JSON.stringify(respuesta))
         })
     }
 
-    $scope.productos = []
+    $scope.productos = productos
 
     buscar()
 
