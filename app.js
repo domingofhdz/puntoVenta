@@ -135,6 +135,25 @@ app.controller("loginCtrl", function ($scope) {
     })
 })
 
+function guardarProducto(producto, fun) {
+    $.post(`${api}/?guardarProducto`, producto, fun)
+    .fail(function () {
+        alert("No se pudo guardar el producto, apenas funcione todo de manera correcta se guardará")
+        localStorage.setItem("guardar-producto", producto)
+    })
+}
+
+sincronizarOffline = function () {
+    const producto = localStorage.getItem("guardar-producto")
+
+    if (producto) {
+        guardarProducto(producto, function () {
+            alert("Producto guardado con éxito!")
+            localStorage.removeItem("guardar-producto")
+        })
+    }
+}
+
 let productos = localStorage.getItem("ls-productos") || "[]"
 productos = JSON.parse(productos)
 
@@ -166,7 +185,7 @@ app.controller("productosCtrl", function ($scope, $timeout) {
             return
         }
 
-        $.post(`${api}/?guardarProducto`, $(this).serialize(), function (respuesta) {
+        guardarProducto($(this).serialize(), function (respuesta) {
             $("#frmProducto").get(0).reset()
             buscar()
         })
