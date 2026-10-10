@@ -259,7 +259,7 @@ const pusher = new Pusher("26a6f47c47de45584ea3", {
     cluster: "us2"
 })
 
-const channel = pusher.subscribe("ventas")
+const channel = pusher.subscribe("canalVentas")
 
 app.controller("ventasCtrl", function ($scope, $timeout) {
     function buscar(busqueda) {
