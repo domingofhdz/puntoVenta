@@ -255,6 +255,12 @@ app.controller("productosCtrl", function ($scope, $timeout) {
     })
 })
 
+const pusher = new Pusher("26a6f47c47de45584ea3", {
+    cluster: "us2"
+})
+
+const channel = pusher.subscribe("ventas")
+
 app.controller("ventasCtrl", function ($scope, $timeout) {
     function buscar(busqueda) {
         $.get(`${api}/?buscarVentas`, {
@@ -277,7 +283,6 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
 
         $.post(`${api}/?guardarVenta`, $(this).serialize(), function (respuesta) {
             $("#frmVenta").get(0).reset()
-            buscar()
         })
     })
     .on("reset", function (event) {
@@ -303,9 +308,12 @@ app.controller("ventasCtrl", function ($scope, $timeout) {
 
         $.post(`${api}/?eliminarVenta`, {
             txtId: id
-        }, function (respuesta) {
-            buscar()
         })
+    })
+
+    channel.bind("eventoVenta", function (data) {
+        $timeout()
+        buscar()
     })
 })
 

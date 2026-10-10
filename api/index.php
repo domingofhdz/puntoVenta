@@ -210,6 +210,8 @@ elseif (isset($_GET["guardarVenta"]) && $login) {
     $insert->value($idUsuario);
     $insert->value($fechaHora);
     $insert->execute();
+
+    require "../../pusher.php";
 }
 elseif (isset($_GET["venta"]) && $login) {
     $id = $_GET["id"];
@@ -279,6 +281,8 @@ elseif (isset($_GET["finalizarVenta"]) && $login) {
     $update->set("pago", $pago);
     $update->where("id", "=", $id);
     $update->execute();
+
+    require "../../pusher.php";
 }
 elseif (isset($_GET["eliminarVenta"]) && $login) {
     $id = $_POST["txtId"];
@@ -287,4 +291,6 @@ elseif (isset($_GET["eliminarVenta"]) && $login) {
     $delete->where("id", "=", $id);
     $delete->where_and("pago", "IS", NULL);
     $delete->execute();
+
+    require "../../pusher.php";
 }
