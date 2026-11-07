@@ -26,7 +26,7 @@ if (btnRecibirNotificaciones) {
                     serviceWorkerRegistration: await navigator.serviceWorker.ready
                 });
                 console.log("Firebase Token:", token);
-                localStorage.setItem("fbtoken", token)
+                localStorage.setItem("fbtoken", token);
             }
             else {
                 console.error("Permiso denegado.");

@@ -31,6 +31,7 @@ const PRECACHEFILES         = [
     "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css",
     "https://code.jquery.com/jquery-4.0.0.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js",
