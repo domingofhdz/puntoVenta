@@ -5,47 +5,6 @@ function asset(file) {
  
 function syncNotifications(reg) {}
 function periodicSyncNotifications(reg) {}
-function pushNotification(reg, title, body) {
-    if (Notification.permission !== "granted") {
-        console.log("info")
-        console.info("Sin permisos para enviar notificaciones.")
-        return false
-    }
- 
-    reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: "GENERA_TU_APPLICATION_SERVER_KEY"
-    })
-    .then(function (pushSubscription) {
-        console.log("info")
-        console.info("Yey!", pushSubscription)
- 
-        let data = new FormData();
-        data.append("sub", JSON.stringify(pushSubscription))
-        data.append("title", title)
-        data.append("body", body)
- 
-        fetch(asset("web-push-push-server.php"), {
-            method: "POST",
-            body: data
-        })
-        .then(function (res) {
-            res.text()
-        })
-        .then(function (txt) {
-            console.log("log")
-            console.log(txt)
-        })
-        .catch(function (err) {
-            console.log("error")
-            console.error("Boo!", err)
-        })
-    })
-    .catch(function (err) {
-        console.log("error")
-        console.error("Boo!", err)
-    })
-}
  
 // Usamos un sufijo de acuerdo al nombre de nuestra aplicación web, yo he usado pwa, pero ustedes pueden considerar otro, estas constantes se volverán a utilizar.
 const PRECACHENAME          = "pwa-precache-v1"
@@ -177,14 +136,22 @@ self.addEventListener("periodicsync", function (event) {
     }
 })
 self.addEventListener("push", function (event) {
-    console.log("info")
-    console.info(event.data)
- 
+    console.info("info", event.data)
+
+    if (!event.data) return
+
     const data = event.data.json()
- 
-    self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: data.icon,
-        image: data.image
+    console.info("info", data)
+
+    if (!data.notification) {
+        return
+    }
+
+    const notification = data.notification
+
+    self.registration.showNotification(notification.title, {
+        body: notification.body,
+        icon: notification.icon,
+        image: notification.image
     })
 })

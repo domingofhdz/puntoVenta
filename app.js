@@ -9,6 +9,8 @@ function debounce(fun, delay) {
 }
 
 const api = "http://localhost/test/pwas/app/puntoVenta/api"
+// const api = "https://seem-ata-south-emphasis.trycloudflare.com/test/pwas/app/puntoVenta/api"
+// const api = "https://dfhash.com/test/app/puntoVenta/api"
 
 const app = angular.module("angularjsApp", ["ngRoute"])
 app.config(function ($routeProvider, $locationProvider) {
@@ -61,8 +63,6 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
                 Authorization: `Bearer ${localStorage.getItem("jwt")}`
             }
         })
-
-        const api = "http://localhost/test/pwas/app/puntoVenta/api"
 
         $.get(`${api}/?sesion`, function (sesion) {
             if (sesion.length) {
@@ -192,6 +192,7 @@ app.controller("productosCtrl", function ($scope, $timeout) {
     })
     .on("reset", function (event) {
         // $(':hidden').val("")
+        validatorProducto.resetForm()
     })
 
     const validatorProducto = $("#frmProducto").validate({
@@ -199,8 +200,7 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         validClass: "is-valid",
         rules: {
             txtNombreProducto: {required: true},
-            txtPrecio: {required: true, number: true, min: 0},
-            cboCategoria: {required: true}
+            txtPrecio: {required: true, number: true, min: 0}
         },
 
         errorPlacement: function(error, element) {
@@ -234,7 +234,6 @@ app.controller("productosCtrl", function ($scope, $timeout) {
             $("#txtId").val(producto.id)
             $("#txtNombreProducto").val(producto.nombreProducto)
             $("#txtPrecio").val(producto.precio)
-            $("#cboCategoria").val(producto.categoria)
         })
     })
 
@@ -248,7 +247,8 @@ app.controller("productosCtrl", function ($scope, $timeout) {
         }
 
         $.post(`${api}/?eliminarProducto`, {
-            txtId: id
+            txtId: id,
+            fbtoken: localStorage.getItem("fbtoken")
         }, function (respuesta) {
             buscar()
         })

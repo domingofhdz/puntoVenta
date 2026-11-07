@@ -30,7 +30,7 @@
                 <td>{{ venta.id }}</td>
                 <td>{{ venta.nombreUsuario }}</td>
                 <td>{{ venta.fechaHora }}</td>
-                <td>{{ venta.pago }}</td>
+                <td>$ {{ venta.pago }}</td>
                 <td>
                     <a class="btn btn-info me-1 mb-1" data-id="{{ venta.id }}" href="#/ventas/{{ venta.id }}">
                         <span ng-if="!venta.pago">Editar</span>

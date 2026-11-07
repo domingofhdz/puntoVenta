@@ -11,15 +11,6 @@
         <label for="txtPrecio">Precio:</label>
         <input type="number" class="form-control" id="txtPrecio" name="txtPrecio" required>
     </div>
-    <div class="mb-1">
-        <label for="cboCategoria">Categoría:</label>
-        <select class="form-select" name="cboCategoria" id="cboCategoria" required>
-            <option value="">Selecciona una opción</option>
-            <option>Galletas</option>
-            <option>Fritos</option>
-            <option>Refrescos</option>
-        </select>
-    </div>
     <div class="mb-1 text-end">
         <button class="btn btn-primary" id="btnGuardar" name="btnGuardar">Guardar</button>
         <button type="reset" class="btn btn-secondary" id="btnCancelar" name="btnCancelar">Cancelar</button>
@@ -38,7 +29,6 @@
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Categoría</th>
                 <th></th>
             </tr>
         </thead>
@@ -46,8 +36,7 @@
             <tr ng-repeat="producto in productos">
                 <td>{{ producto.id }}</td>
                 <td>{{ producto.nombreProducto }}</td>
-                <td>{{ producto.precio }}</td>
-                <td>{{ producto.categoria }}</td>
+                <td>$ {{ producto.precio }}</td>
                 <td>
                     <button class="btn btn-info btn-editar me-1 mb-1 while-waiting" data-id="{{ producto.id }}">Editar</button>
                     <button class="btn btn-danger btn-eliminar while-waiting" data-id="{{ producto.id }}">Eliminar</button>

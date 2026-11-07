@@ -123,7 +123,8 @@ elseif (isset($_GET["buscarProductos"])) {
     $array = array();
 
     $sql = "SELECT * FROM productos
-    WHERE nombreProducto LIKE '%$busqueda%';";
+    WHERE nombreProducto LIKE '%$busqueda%'
+    LIMIT 25;";
 
     foreach ($con->query($sql) as $producto) {
         $array[] = $producto;
@@ -137,21 +138,18 @@ elseif (isset($_GET["guardarProducto"]) && $login) {
     $id = $_POST["txtId"];
     $nombreProducto = $_POST["txtNombreProducto"];
     $precio = $_POST["txtPrecio"];
-    $categoria = $_POST["cboCategoria"];
 
     if ($id) {
         $guardar = $con->update("productos");
         $guardar->set("nombreProducto", $nombreProducto);
         $guardar->set("precio", $precio);
-        $guardar->set("categoria", $categoria);
         $guardar->where("id", "=", $id);
     }
     else {
-        $guardar = $con->insert("productos", "id, nombreProducto, precio, categoria");
+        $guardar = $con->insert("productos", "id, nombreProducto, precio");
         $guardar->value(uniqid());
         $guardar->value($nombreProducto);
         $guardar->value($precio);
-        $guardar->value($categoria);
     }
 
     $guardar->execute();
@@ -179,6 +177,21 @@ elseif (isset($_GET["eliminarProducto"]) && $login) {
     $delete = $con->delete("productos");
     $delete->where("id", "=", $id);
     $delete->execute();
+
+
+    require_once "../../kreait-firebase-php/vendor/autoload.php";
+    $serviceAccountJson = json_decode($firebase_service_account, true);
+    $firebase = (new Kreait\Firebase\Factory)->withServiceAccount($serviceAccountJson)->createMessaging();
+
+    $message = array(
+        "token" => $_POST["fbtoken"],
+        "notification" => array(
+            "title" => "PWA POS",
+            "body" => "Se eliminó un producto"
+        )
+    );
+    
+    $firebase->send($message);
 }
 
 
@@ -191,7 +204,9 @@ elseif (isset($_GET["buscarVentas"]) && $login) {
 
     $sql = "SELECT ventas.*, usuarios.nombreUsuario FROM ventas
     INNER JOIN usuarios ON usuarios.id = ventas.usuario
-    WHERE fechaHora LIKE '%$busqueda%';";
+    WHERE fechaHora LIKE '%$busqueda%'
+    ORDER BY fechaHora DESC
+    LIMIT 25;";
 
     foreach ($con->query($sql) as $venta) {
         $array[] = $venta;
